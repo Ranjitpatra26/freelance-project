@@ -1069,3 +1069,23 @@ body.scroll-lock {
 .panel-backdrop-fade {
   animation: panelBackdropFade 0.3s ease-out forwards;
 }
+
+/* Character Mascot Floating Animations */
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-gentle 4s ease-in-out infinite;
+  animation-delay: 2s;
+}
+

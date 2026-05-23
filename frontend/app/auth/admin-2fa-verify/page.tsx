@@ -21,19 +21,19 @@ export default function TwoFAVerifyPage() {
     }, []); // Only run once on mount
 
     const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+        const value = e.target.value.replace(/[^a-zA-Z0-9]/g, '').slice(0, 8);
         setCode(value);
         setError('');
 
-        // Auto-submit when 6 digits are entered
-        if (value.length === 6) {
+        // Auto-submit when 6 purely numerical digits are entered
+        if (/^\d{6}$/.test(value)) {
             handleSubmit(value);
         }
     };
 
     const handleSubmit = async (codeToSubmit: string = code) => {
-        if (codeToSubmit.length !== 6) {
-            setError('Please enter a 6-digit code');
+        if (codeToSubmit.length !== 6 && codeToSubmit.length !== 8) {
+            setError('Please enter a 6-digit authenticator code or 8-character backup code');
             return;
         }
 
@@ -76,12 +76,11 @@ export default function TwoFAVerifyPage() {
                             type="text"
                             value={code}
                             onChange={handleCodeChange}
-                            placeholder="000000"
-                            maxLength={6}
+                            placeholder="Code / Backup Code"
+                            maxLength={8}
                             disabled={loading}
                             autoFocus
                             className="input-field text-center text-xl sm:text-2xl tracking-widest font-mono p-3 sm:p-4 w-full"
-                            pattern="[0-9]*"
                         />
                         {error && (
                             <p className="text-red-500 text-xs sm:text-sm mt-2 text-center">{error}</p>
@@ -90,7 +89,7 @@ export default function TwoFAVerifyPage() {
 
                     <button
                         onClick={() => handleSubmit()}
-                        disabled={loading || code.length !== 6}
+                        disabled={loading || (code.length !== 6 && code.length !== 8)}
                         className="btn-primary w-full justify-center py-3 sm:py-4 mt-4 sm:mt-6 text-sm sm:text-base h-12 sm:h-auto flex items-center justify-center gap-2"
                     >
                         {loading ? (

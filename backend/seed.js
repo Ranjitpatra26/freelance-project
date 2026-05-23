@@ -2,8 +2,18 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const User = require('./models/User');
 const Product = require('./models/Product');
+const speakeasy = require('speakeasy');
 
 dotenv.config();
+
+// Generate backup codes for 2FA
+const generateBackupCodes = () => {
+    const codes = [];
+    for (let i = 0; i < 10; i++) {
+        codes.push(Math.random().toString(36).substring(2, 10).toUpperCase());
+    }
+    return codes;
+};
 
 const products = [
     // --- Flavoured Makhanas ---
@@ -404,14 +414,28 @@ async function seed() {
         // Create admin user only if none exists
         const adminExists = await User.findOne({ email: 'admin@shuddheats.com' });
         if (!adminExists) {
+            // Generate 2FA secret for admin
+            const secret = speakeasy.generateSecret({
+                name: 'SuddhEats Admin',
+                issuer: 'SuddhEats',
+                length: 32
+            });
+            const backupCodes = generateBackupCodes();
+
             await User.create({
                 name: 'ShuddhEats Admin',
                 email: 'admin@shuddheats.com',
                 password: 'admin123',
                 role: 'admin',
-                phone: '9876543210'
+                phone: '9876543210',
+                twoFactorEnabled: true,
+                twoFactorSecret: secret.base32,
+                backupCodes: backupCodes
             });
-            console.log('✅ Admin created: admin@shuddheats.com / admin123');
+            console.log('✅ Admin created with 2FA enabled: admin@shuddheats.com / admin123');
+            console.log('📱 2FA Secret (Base32):', secret.base32);
+            console.log('🔐 Authenticator App: Use QR code or enter secret manually in your authenticator app');
+            console.log('⚠️  Backup Codes:', backupCodes.join(', '));
         } else {
             console.log('✅ Admin already exists');
         }

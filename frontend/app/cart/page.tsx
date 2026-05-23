@@ -55,8 +55,8 @@ export default function CartPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
                     {/* Items */}
                     <div className="lg:col-span-2 space-y-3 sm:space-y-4">
-                        {items.map((item) => (
-                            <div key={item.product} className="card p-3 sm:p-4 flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center">
+                        {items.map((item, index) => (
+                            <div key={`${item.product}-${item.weight}-${item.packaging}-${index}`} className="card p-3 sm:p-4 flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center">
                                 <img src={item.image} alt={item.name} className="w-24 h-24 sm:w-20 sm:h-20 object-cover rounded-lg sm:rounded-xl shrink-0 animate-scaleIn" />
                                 <div className="flex-1 min-w-0 w-full">
                                     <h3 className="font-bold text-sm sm:text-base line-clamp-2" style={{ color: '#475d2a' }}>{item.name}</h3>

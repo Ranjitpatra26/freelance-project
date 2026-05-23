@@ -149,8 +149,12 @@ export default function CheckoutPage() {
     const { items, subtotal, clearCart } = useCart();
     const { user } = useAuth();
     const router = useRouter();
+    const [promoCode, setPromoCode] = useState('');
+    const [discountAmount, setDiscountAmount] = useState(0);
+    const [appliedPromo, setAppliedPromo] = useState('');
+
     const shipping = subtotal > 499 ? 0 : 49;
-    const total = subtotal + shipping;
+    const total = Math.max(0, subtotal - discountAmount + shipping);
     const orderCreatedRef = useRef(false);
 
     const [form, setForm] = useState({ fullName: user?.name || '', phone: '', addressLine1: '', addressLine2: '', city: '', state: 'Maharashtra', pincode: '' });
@@ -162,6 +166,30 @@ export default function CheckoutPage() {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setForm(f => ({ ...f, [name]: value }));
+    };
+
+    const handleApplyPromo = (e: React.FormEvent) => {
+        e.preventDefault();
+        const code = promoCode.trim().toUpperCase();
+        if (appliedPromo) {
+            toast.error('Promo code already applied');
+            return;
+        }
+        if (code === 'SHUDDHEATS10' || code === 'FIRST10' || code === 'CLEAN10') {
+            const calculatedDiscount = Math.round(subtotal * 0.1);
+            setDiscountAmount(calculatedDiscount);
+            setAppliedPromo(code);
+            toast.success('10% First Order discount applied! 🎉');
+        } else {
+            toast.error('Invalid promo code');
+        }
+    };
+
+    const handleRemovePromo = () => {
+        setDiscountAmount(0);
+        setAppliedPromo('');
+        setPromoCode('');
+        toast.success('Discount removed');
     };
 
     const validate = () => {
@@ -306,12 +334,50 @@ export default function CheckoutPage() {
                                 ))}
                             </div>
 
+                            {/* Promo Code Input */}
+                            <div className="border-t border-gray-100 pt-4 mt-4 space-y-2">
+                                <label className="block text-xs font-extrabold uppercase tracking-wider" style={{ color: '#475d2a' }}>
+                                    🏷️ Promo Code
+                                </label>
+                                {appliedPromo ? (
+                                    <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-xl text-xs">
+                                        <span className="font-bold text-emerald-800">Code "{appliedPromo}" Applied!</span>
+                                        <button type="button" onClick={handleRemovePromo} className="text-red-500 hover:text-red-700 font-bold cursor-pointer transition-colors duration-150">
+                                            Remove
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            value={promoCode}
+                                            onChange={e => setPromoCode(e.target.value)}
+                                            placeholder="e.g. FIRST10"
+                                            className="input-field text-xs py-1.5 px-3 flex-1 min-h-[36px]"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={handleApplyPromo}
+                                            className="btn-primary text-xs px-3 py-1.5 rounded-lg whitespace-nowrap cursor-pointer min-h-[36px]"
+                                        >
+                                            Apply
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
                             {/* Pricing */}
                             <div className="space-y-1.5 text-sm border-t border-gray-100 pt-4 mt-4">
                                 <div className="flex justify-between">
                                     <span className="text-gray-500">Subtotal</span>
                                     <span className="font-medium">₹{subtotal}</span>
                                 </div>
+                                {discountAmount > 0 && (
+                                    <div className="flex justify-between text-emerald-600 font-semibold animate-scaleIn">
+                                        <span>Discount (10%)</span>
+                                        <span>-₹{discountAmount}</span>
+                                    </div>
+                                )}
                                 <div className="flex justify-between">
                                     <span className="text-gray-500">Shipping</span>
                                     <span className={shipping === 0 ? 'text-green-600 font-bold' : ''}>

@@ -372,70 +372,149 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Bundles */}
-      <section className="py-12 bg-white animate-fadeInUp">
+      {/* Why We're Different */}
+      <section className="py-20 bg-gradient-to-b from-white to-[#fafaf7] overflow-hidden">
         <div className="page-container">
-          <div className="text-center mb-8">
-            <div className="badge badge-primary mb-2 animate-scaleIn">Special Offers</div>
-            <h2 className="section-title text-2xl animate-fadeInUp delay-100">Bundles That Match Your Goals</h2>
-            <p className="section-subtitle mt-2 max-w-xl mx-auto text-sm animate-fadeInUp delay-200">Save more with our curated bundles designed for your lifestyle</p>
+          <div className="text-center mb-16 animate-fadeInUp">
+            <div className="badge badge-primary mb-3 animate-scaleIn">What Makes Us Special</div>
+            <h2 className="section-title text-3xl md:text-4xl font-extrabold text-[#475d2a]">Why ShuddhEats is Different</h2>
+            <p className="section-subtitle mt-3 max-w-2xl mx-auto text-gray-600">We believe in quality over quantity. Here is how we compare to traditional snacking options.</p>
           </div>
-          <div className="w-full overflow-hidden flex justify-center">
-            <div className="scroll-animate flex gap-4 w-max" style={{ '--duration': '22s' } as any}>
-              {[
-                { name: 'Best Seller Bundle', image: '/images/products/himalayan-salt-makhana.svg', save: '7%', price: 829, original: 890, rating: 4.8, reviews: 67 },
-                { name: 'Fitness Bundle', image: '/images/products/sweet-potato-chips.svg', save: '12%', price: 1299, original: 1499, rating: 4.9, reviews: 156 },
-                { name: 'Healthy Snack Box', image: '/images/products/millet-cookies.svg', save: '10%', price: 1039, original: 1150, rating: 4.7, reviews: 98 },
-                { name: 'Ultimate Mix Bundle', image: '/images/products/pudina-makhana.svg', save: '15%', price: 1379, original: 1620, rating: 4.6, reviews: 88 },
-                { name: 'Best Seller Bundle', image: '/images/products/himalayan-salt-makhana.svg', save: '7%', price: 829, original: 890, rating: 4.8, reviews: 67 },
-                { name: 'Fitness Bundle', image: '/images/products/sweet-potato-chips.svg', save: '12%', price: 1299, original: 1499, rating: 4.9, reviews: 156 },
-              ].map((bundle, i) => (
-                <div key={`bundle-${i}`} className="flex-shrink-0 w-[240px] sm:w-[280px] card p-4 group relative">
-                  {/* Save Badge */}
-                  <div className="absolute top-3 left-3 z-10 rounded-full text-white text-xs font-bold px-3 py-1" style={{ background: '#c94a54' }}>
-                    Save {bundle.save}
-                  </div>
 
-                  {/* Bundle Image */}
-                  <div className="relative w-full h-40 mb-3 rounded-lg overflow-hidden bg-[#f0f4ed] flex items-center justify-center">
-                    <Image
-                      src={bundle.image}
-                      alt={bundle.name}
-                      width={160}
-                      height={160}
-                      className="object-contain group-hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-
-                  {/* Stars */}
-                  <div className="flex items-center gap-1 mb-2">
-                    <div className="flex gap-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-[#475d2a] text-[#475d2a]" />
-                      ))}
-                    </div>
-                    <span className="text-xs text-gray-500">({bundle.reviews})</span>
-                  </div>
-
-                  {/* Bundle Name */}
-                  <h3 className="font-semibold text-sm mb-2 text-[#475d2a] line-clamp-2">{bundle.name}</h3>
-
-                  {/* Price */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs line-through text-gray-400">₹{bundle.original}</span>
-                    <span className="text-lg font-bold text-red-500">₹{bundle.price}</span>
-                  </div>
-
-                  {/* Add to Cart Button */}
-                  <button className="w-full btn-primary text-xs py-2 justify-center" suppressHydrationWarning>
-                    Add to cart
-                  </button>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Tabular Comparison Table Card - Left Side (5 cols) */}
+            <div className="lg:col-span-5 card p-6 md:p-8 border border-gray-100 hover:shadow-xl transition-all duration-500 animate-slideInLeft relative overflow-hidden bg-white">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#475d2a]/5 rounded-full filter blur-xl pointer-events-none"></div>
+              
+              <h3 className="text-xl font-bold mb-6 text-[#475d2a] flex items-center gap-2">
+                📊 The Snacking Comparison
+              </h3>
+              
+              <div className="space-y-4">
+                {/* Table Header */}
+                <div className="grid grid-cols-2 gap-4 pb-3 border-b border-gray-100 text-xs font-bold uppercase tracking-wider text-gray-400">
+                  <div>Traditional Snacks</div>
+                  <div className="text-[#475d2a]">ShuddhEats</div>
                 </div>
-              ))}
+
+                {/* Row 1 */}
+                <div className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 text-sm">
+                  <div className="text-gray-500 flex items-start gap-1.5">
+                    <span className="text-red-500">❌</span> Deep Fried in Palm Oil
+                  </div>
+                  <div className="text-gray-800 font-medium flex items-start gap-1.5">
+                    <span className="text-green-600">✅</span> Roasted or Air-Fried
+                  </div>
+                </div>
+
+                {/* Row 2 */}
+                <div className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 text-sm">
+                  <div className="text-gray-500 flex items-start gap-1.5">
+                    <span className="text-red-500">❌</span> Artificial Preservatives
+                  </div>
+                  <div className="text-gray-800 font-medium flex items-start gap-1.5">
+                    <span className="text-green-600">✅</span> 100% Preservative Free
+                  </div>
+                </div>
+
+                {/* Row 3 */}
+                <div className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 text-sm">
+                  <div className="text-gray-500 flex items-start gap-1.5">
+                    <span className="text-red-500">❌</span> Refined Sugar & Maida
+                  </div>
+                  <div className="text-gray-800 font-medium flex items-start gap-1.5">
+                    <span className="text-green-600">✅</span> Millets, Jowar & Stevia
+                  </div>
+                </div>
+
+                {/* Row 4 */}
+                <div className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 text-sm">
+                  <div className="text-gray-500 flex items-start gap-1.5">
+                    <span className="text-red-500">❌</span> Industrial Batching
+                  </div>
+                  <div className="text-gray-800 font-medium flex items-start gap-1.5">
+                    <span className="text-green-600">✅</span> Handcrafted Small Batches
+                  </div>
+                </div>
+
+                {/* Row 5 */}
+                <div className="grid grid-cols-2 gap-4 py-3 text-sm">
+                  <div className="text-gray-500 flex items-start gap-1.5">
+                    <span className="text-red-500">❌</span> Hidden Chemicals & MSG
+                  </div>
+                  <div className="text-gray-800 font-medium flex items-start gap-1.5">
+                    <span className="text-green-600">✅</span> Clean-Labeled Ingredients
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* Column Grid Cards - Right Side (7 cols) */}
+            <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6 animate-slideInRight">
+              {/* Feature 1 */}
+              <div className="group bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform duration-300 bg-[#f0f4ed] text-[#475d2a]">
+                    🌿
+                  </div>
+                  <h4 className="text-lg font-bold mb-2 text-[#475d2a]">100% Natural</h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Every product uses only pure, whole ingredients sourced directly from nature. No synthetic flavors, colors, or additives.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 2 */}
+              <div className="group bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform duration-300 bg-[#f0f4ed] text-[#475d2a]">
+                    👐
+                  </div>
+                  <h4 className="text-lg font-bold mb-2 text-[#475d2a]">Handcrafted</h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Prepared in small batches, mimicking home cooking, ensuring consistent freshness, flavor, and absolute quality control.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 3 */}
+              <div className="group bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform duration-300 bg-[#f0f4ed] text-[#475d2a]">
+                    🚫
+                  </div>
+                  <h4 className="text-lg font-bold mb-2 text-[#475d2a]">No Palm Oil</h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    We stay far away from refined sugars and unhealthy palm oil. We use cold-pressed oil and natural sweeteners like stevia.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 4 */}
+              <div className="group bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform duration-300 bg-[#f0f4ed] text-[#475d2a]">
+                    🌱
+                  </div>
+                  <h4 className="text-lg font-bold mb-2 text-[#475d2a]">Sustainably Sourced</h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Partnering directly with local farmers ensures fresher ingredients, supports community livelihoods, and reduces carbon footprint.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="text-center mt-16 animate-fadeInUp delay-600">
+            <p className="text-base text-gray-700 mb-8 max-w-2xl mx-auto">Experience the difference that quality ingredients, careful craftsmanship, and genuine care make. Try ShuddhEats today and taste the real difference.</p>
+            <Link href="/shop" className="btn-accent inline-flex items-center gap-2 px-8 py-3">
+              Explore Our Handcrafted Collection <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
+
 
       {/* Our Story */}
       <OurStory />
@@ -448,6 +527,29 @@ export default function HomePage() {
             <h2 className="section-title text-2xl">What Our Snackers Say</h2>
           </div>
           <div className="max-w-2xl mx-auto relative">
+            
+            {/* Left Mascot Character (Woman Green) */}
+            <div className="absolute right-full mr-4 lg:mr-10 xl:mr-14 bottom-0 w-64 lg:w-80 xl:w-96 h-auto lg:block hidden z-10 animate-float pointer-events-none select-none">
+              <Image 
+                src="/images/character-woman-green.png" 
+                alt="ShuddhEats Mascot Green" 
+                width={384} 
+                height={285}
+                className="w-full h-auto object-contain filter drop-shadow-[0_12px_24px_rgba(71,93,42,0.12)] hover:scale-108 hover:-rotate-3 transition-all duration-500 ease-out pointer-events-auto cursor-pointer"
+              />
+            </div>
+
+            {/* Right Mascot Character (Man Yellow) */}
+            <div className="absolute left-full ml-4 lg:ml-10 xl:ml-14 bottom-0 w-64 lg:w-80 xl:w-96 h-auto lg:block hidden z-10 animate-float-delayed pointer-events-none select-none">
+              <Image 
+                src="/images/character-yellow.png" 
+                alt="ShuddhEats Mascot Yellow" 
+                width={384} 
+                height={384}
+                className="w-full h-auto object-contain filter drop-shadow-[0_12px_24px_rgba(71,93,42,0.12)] hover:scale-108 hover:rotate-3 transition-all duration-500 ease-out pointer-events-auto cursor-pointer"
+              />
+            </div>
+
             {mounted && (
               <div className="card p-8 text-center animate-fadeIn" key={testimonialIndex}>
                 <div className="flex justify-center gap-1 mb-4">
@@ -490,8 +592,8 @@ export default function HomePage() {
             <h2 className="text-2xl font-extrabold mb-2 animate-fadeInUp delay-100" style={{ color: '#1a1a1a' }}>Get 10% Off Your First Order!</h2>
             <p className="text-sm mb-6 animate-fadeInUp delay-200" style={{ color: 'rgba(0,0,0,0.6)' }}>Join our snacker newsletter for exclusive discounts, new launches, and healthy snacking tips.</p>
             {subSuccess ? (
-              <div className="bg-[#475d2a] text-white py-4 px-8 rounded-2xl font-bold text-lg animate-scaleIn">
-                🎉 You're in! Check your email for your discount code.
+              <div className="bg-[#475d2a] text-white py-4 px-8 rounded-2xl font-bold text-base sm:text-lg animate-scaleIn shadow-md">
+                🎉 You're in! Use discount code <span className="underline decoration-yellow-400 font-extrabold text-yellow-300">FIRST10</span> to get 10% off your first order!
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="flex gap-3 max-w-md mx-auto animate-fadeInUp delay-300">

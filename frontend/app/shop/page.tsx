@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
 import ProductCard from '@/components/ProductCard';
 import api from '@/lib/api';
 import { Search, SlidersHorizontal, X, Grid3x3, List } from 'lucide-react';
@@ -17,7 +16,6 @@ const SORTS = [
 function ShopContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const { user, loading: authLoading } = useAuth();
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState(searchParams.get('search') || '');
@@ -25,13 +23,6 @@ function ShopContent() {
     const [sort, setSort] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
-
-    // Redirect to login if not authenticated
-    useEffect(() => {
-        if (!authLoading && !user) {
-            router.push('/auth/login?redirect=/shop');
-        }
-    }, [user, authLoading, router]);
 
     const mockProducts = [
         { _id: '1', name: 'Himalayan Salt Makhana (30g)', slug: 'himalayan-salt-makhana-100g', price: 249, originalPrice: 299, category: 'Flavoured Makhanas', thumbnail: '/images/products/himalayan-salt-makhana.svg', ratings: 4.8, numReviews: 124, isBestSeller: true, stock: 150, shortDescription: 'Roasted fox nuts with Himalayan pink salt.', weight: 30 },
@@ -47,8 +38,6 @@ function ShopContent() {
 
     // Fetch products based on filters
     useEffect(() => {
-        if (authLoading || !user) return;
-
         const fetchProducts = async () => {
             setLoading(true);
             try {
@@ -92,26 +81,14 @@ function ShopContent() {
         };
 
         fetchProducts();
-    }, [user, authLoading, category, search, sort]);
+    }, [category, search, sort]);
 
     const catUrl = searchParams.get('category');
     useEffect(() => {
         if (catUrl) setCategory(catUrl);
     }, [catUrl]);
 
-    // Show loading while checking auth
-    if (authLoading) {
-        return (
-            <div className="min-h-screen pt-24 flex items-center justify-center">
-                <div className="w-12 h-12 border-4 border-[#475d2a] border-t-transparent rounded-full" style={{ animation: 'spin 0.8s linear infinite' }} />
-            </div>
-        );
-    }
 
-    // Don't render if not authenticated (will redirect)
-    if (!user) {
-        return null;
-    }
 
     return (
         <div className="min-h-screen pt-24 pb-16" style={{ background: '#fafaf7' }}>

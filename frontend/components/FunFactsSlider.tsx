@@ -116,6 +116,28 @@ export default function FunFactsSlider() {
         {/* Carousel Container */}
         <div className="relative max-w-4xl mx-auto px-4">
           
+          {/* Left Mascot Character (Chef Red) */}
+          <div className="absolute right-full mr-3 lg:mr-8 xl:mr-10 bottom-[-20px] w-44 lg:w-56 xl:w-64 h-auto lg:block hidden z-10 animate-float pointer-events-none select-none">
+            <Image 
+              src="/images/character-red.png" 
+              alt="ShuddhEats Mascot Chef" 
+              width={260} 
+              height={270}
+              className="w-full h-auto object-contain filter drop-shadow-[0_12px_24px_rgba(71,93,42,0.15)] hover:scale-108 hover:-rotate-3 transition-all duration-500 ease-out pointer-events-auto cursor-pointer"
+            />
+          </div>
+
+          {/* Right Mascot Character (Chef Orange) */}
+          <div className="absolute left-full ml-3 lg:ml-8 xl:ml-10 bottom-[-15px] w-44 lg:w-56 xl:w-64 h-auto lg:block hidden z-10 animate-float-delayed pointer-events-none select-none">
+            <Image 
+              src="/images/character-orange-v2.png" 
+              alt="ShuddhEats Mascot Elder" 
+              width={260} 
+              height={260}
+              className="w-full h-auto object-contain filter drop-shadow-[0_12px_24px_rgba(71,93,42,0.15)] hover:scale-108 hover:rotate-3 transition-all duration-500 ease-out pointer-events-auto cursor-pointer"
+            />
+          </div>
+
           {/* Main Slide Card */}
           <div className={`card overflow-hidden shadow-md border border-gray-100 transition-all duration-500 ${slides[currentIndex].bgTheme}`}>
             <div className="grid grid-cols-1 md:grid-cols-12 items-center min-h-[290px]">

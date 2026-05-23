@@ -58,12 +58,7 @@ export default function ProductDetailPage() {
         }
     };
 
-    // Redirect to login if not authenticated
-    useEffect(() => {
-        if (!authLoading && !user) {
-            router.push(`/auth/login?redirect=/shop/${slug}`);
-        }
-    }, [user, authLoading, router, slug]);
+
 
     useEffect(() => {
         const fetch = async () => {
@@ -111,19 +106,7 @@ export default function ProductDetailPage() {
         }
     };
 
-    // Show loading while checking auth
-    if (authLoading) {
-        return (
-            <div className="min-h-screen pt-24 flex items-center justify-center">
-                <div className="w-12 h-12 border-4 border-[#475d2a] border-t-transparent rounded-full" style={{ animation: 'spin 0.8s linear infinite' }} />
-            </div>
-        );
-    }
 
-    // Don't render if not authenticated (will redirect)
-    if (!user) {
-        return null;
-    }
 
     if (!product) return (
         <div className="min-h-screen pt-24 flex items-center justify-center flex-col gap-4">

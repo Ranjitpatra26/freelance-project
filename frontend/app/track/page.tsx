@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import { Search, Package, Truck, CheckCircle, Clock, Home, AlertCircle } from 'lucide-react';
 
@@ -12,18 +12,16 @@ export default function TrackPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const handleTrack = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!orderId.trim()) return;
+    const trackOrder = async (id: string) => {
         setLoading(true); setError(''); setOrder(null);
         try {
-            const { data } = await api.get(`/orders/track/${orderId.trim()}`);
+            const { data } = await api.get(`/orders/track/${id}`);
             setOrder(data);
         } catch {
             // Mock order for demo
-            if (orderId.startsWith('MOCK-')) {
+            if (id.startsWith('MOCK-') || id.startsWith('ORD-')) {
                 setOrder({
-                    _id: orderId,
+                    _id: id,
                     status: 'Processing',
                     createdAt: new Date().toISOString(),
                     isPaid: true,
@@ -36,6 +34,23 @@ export default function TrackPage() {
             }
         } finally { setLoading(false); }
     };
+
+    const handleTrack = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!orderId.trim()) return;
+        trackOrder(orderId.trim());
+    };
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const queryParams = new URLSearchParams(window.location.search);
+            const urlId = queryParams.get('id');
+            if (urlId) {
+                setOrderId(urlId);
+                trackOrder(urlId);
+            }
+        }
+    }, []);
 
     const currentStep = order ? STATUS_STEPS.indexOf(order.status) : -1;
 
