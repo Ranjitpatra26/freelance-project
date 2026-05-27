@@ -11,6 +11,7 @@ router.get('/', protect, async (req, res) => {
         const cart = await Cart.findOne({ user: req.user._id }).populate('items.product', 'name price thumbnail slug stock');
         res.json(cart || { items: [] });
     } catch (err) {
+        console.error("Cart GET Error:", err);
         res.status(500).json({ message: err.message });
     }
 });

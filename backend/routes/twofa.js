@@ -64,7 +64,7 @@ router.post('/verify-setup', protect, adminOnly, async (req, res) => {
             secret: secret,
             encoding: 'base32',
             token: totpCode,
-            window: 2
+            window: 6
         });
 
         if (!verified) {

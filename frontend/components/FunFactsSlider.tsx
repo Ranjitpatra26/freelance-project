@@ -40,14 +40,14 @@ const slides = [
       <div className="relative w-full h-full flex items-center justify-center p-4">
         <div className="absolute inset-0 bg-radial-gradient from-amber-100 to-transparent opacity-60 rounded-2xl"></div>
         <div className="relative z-10 flex flex-col items-center gap-3 animate-fadeInUp">
-          <div className="flex gap-2">
-            <div className="relative w-18 h-18 bg-white/90 rounded-xl shadow-xs border border-amber-300 flex items-center justify-center hover:scale-105 transition-transform duration-300">
-              <Image src="/images/products/sweet-potato-chips.svg" alt="Sweet Potato Chips" width={50} height={50} className="object-contain" />
+            <div className="flex gap-2">
+              <div className="relative w-18 h-18 bg-white/90 rounded-xl shadow-xs border border-amber-300 flex items-center justify-center hover:scale-105 transition-transform duration-300 p-2">
+                <span className="text-4xl">🍠</span>
+              </div>
+              <div className="relative w-18 h-18 bg-white/90 rounded-xl shadow-xs border border-rose-300 flex items-center justify-center hover:scale-105 transition-transform duration-300 p-2">
+                <span className="text-4xl">🥗</span>
+              </div>
             </div>
-            <div className="relative w-18 h-18 bg-white/90 rounded-xl shadow-xs border border-rose-300 flex items-center justify-center hover:scale-105 transition-transform duration-300">
-              <Image src="/images/products/beetroot-chips.svg" alt="Beetroot Chips" width={50} height={50} className="object-contain" />
-            </div>
-          </div>
           <div className="bg-amber-600 text-white font-extrabold text-[9px] tracking-widest uppercase px-3 py-1 rounded-full shadow flex items-center gap-1">
             <Flame className="w-3 h-3 fill-white text-white" /> Convection Popped
           </div>

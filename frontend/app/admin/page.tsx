@@ -4,7 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '@/lib/api';
-import { Package, ShoppingBag, Users, DollarSign, TrendingUp, ArrowRight } from 'lucide-react';
+import { Package, ShoppingBag, Users, DollarSign, TrendingUp, ArrowRight, Shield } from 'lucide-react';
 
 export default function AdminDashboard() {
     const { user, isAdmin, loading } = useAuth();
@@ -80,6 +80,7 @@ export default function AdminDashboard() {
                         { href: '/admin/products', label: 'Products', desc: 'Add, edit, delete products', icon: Package },
                         { href: '/admin/orders', label: 'Orders', desc: 'View and update order status', icon: ShoppingBag },
                         { href: '/admin/inventory', label: 'Inventory', desc: 'Manage stock levels', icon: TrendingUp },
+                        { href: '/admin/settings/2fa', label: 'Security (2FA)', desc: 'Manage 2-Factor Authentication', icon: Shield },
                     ].map(({ href, label, desc, icon: Icon }) => (
                         <Link key={href} href={href} className="card p-4 sm:p-5 group flex items-center gap-3 sm:gap-4">
                             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-2xl flex items-center justify-center transition-colors flex-shrink-0 group-hover:bg-[#475d2a]" style={{ background: '#f0f4ed' }}>

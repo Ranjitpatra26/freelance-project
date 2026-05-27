@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { useState, useRef, useCallback } from 'react';
 import { useCart } from '@/context/CartContext';
@@ -126,14 +127,12 @@ export default function ProductCardWithSizes({ product }: { product: Product }) 
     return (
         <div className="card group cursor-pointer h-full flex flex-col hover:shadow-2xl transition-all duration-300 ease-out">
             <Link href={`/shop/${product.slug}`} className="block relative overflow-hidden flex-shrink-0 w-full h-40 sm:h-48 rounded-t-2xl flex items-center justify-center group/image" style={{ background: '#f0f4ed' }}>
-                <img
-                    src={product.thumbnail}
+                <Image
+                    src={product.thumbnail || '/images/products/himalayan-salt-makhana.svg'}
                     alt={product.name}
-                    loading="lazy"
-                    decoding="async"
-                    width={400}
-                    height={400}
-                    className="w-full h-full object-contain transition-transform duration-500 ease-out group-hover/image:scale-110"
+                    fill
+                    priority={false}
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/image:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover/image:opacity-100 transition-opacity duration-300" />
 

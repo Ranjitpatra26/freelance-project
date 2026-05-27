@@ -20,6 +20,13 @@ const heroSlides = [
     subtitle: 'Guilt-free, clean-labeled snacks that your body will thank you for. Roasted, not deep-fried.'
   },
   {
+    image: '/images/products/makhana-bundel.jpeg',
+    badge: '🌰 Air-Popped | Guilt-Free | High Protein',
+    titleLine1: 'Flavoured',
+    titleLine2: 'Makhanas',
+    subtitle: 'From Himalayan Salt to Peri Peri — discover our full range of delicious roasted fox nuts.'
+  },
+  {
     image: '/images/hero/ragi-cookies.jpg',
     badge: '🍪 Healthy | Organic | Clean Eating',
     titleLine1: 'Ragi & Elaichi',
@@ -34,6 +41,13 @@ const heroSlides = [
     subtitle: 'Wholesome | Vegan | Gluten-Free. Made with 100% Organic Jowar & Premium Nuts.'
   },
   {
+    image: '/images/products/cokkies-bundel.jpeg',
+    badge: '🍪 No Sugar | No Palm Oil | Millet Goodness',
+    titleLine1: 'Millet Cookie',
+    titleLine2: 'Collection',
+    subtitle: 'Baked with love — Honey & Oats, Jowar & Nuts, Ragi & Elaichi. Zero refined sugar.'
+  },
+  {
     image: '/images/hero/beetroot-chips.jpg',
     badge: '🥔 Low Calorie | Fibre Rich',
     titleLine1: 'Beetroot',
@@ -46,6 +60,13 @@ const heroSlides = [
     titleLine1: 'Broccoli',
     titleLine2: 'Chips',
     subtitle: 'Air Fried & Crispy. Real Broccoli Taste with zero added preservatives.'
+  },
+  {
+    image: '/images/products/chips-bundel.jpeg',
+    badge: '🥗 Air Fried | 70% Less Oil | Crunchy',
+    titleLine1: 'Air Fried Chips',
+    titleLine2: 'Collection',
+    subtitle: 'Beetroot, Broccoli & Ragi chips — crispy, clean, and crafted with love in Mumbai.'
   }
 ];
 
@@ -53,6 +74,7 @@ const categories = [
   {
     name: 'Flavoured Makhanas',
     emoji: '🌰',
+    image: '/images/products/makhana-bundel.jpeg',
     desc: 'Air-popped fox nuts, guilt-free snacking',
     color: '#f0f4ed',
     icon: '🌿',
@@ -62,6 +84,7 @@ const categories = [
   {
     name: 'Air Fried Chips',
     emoji: '🥔',
+    image: '/images/products/chips-bundel.jpeg',
     desc: '70% less oil, 100% more crunch',
     color: '#FEF9E7',
     icon: '⚡',
@@ -71,6 +94,7 @@ const categories = [
   {
     name: 'No Sugar No Palm Oil Millet Cookies',
     emoji: '🍪',
+    image: '/images/products/cokkies-bundel.jpeg',
     desc: 'Nutritious millet cookies with zero sugar',
     color: '#F0FDF4',
     icon: '💪',
@@ -99,32 +123,26 @@ export default function HomePage() {
   const [email, setEmail] = useState('');
   const [subSuccess, setSubSuccess] = useState(false);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
+  const [infoSlide, setInfoSlide] = useState(0);
+  const infoSlides = [{ image: '/images/slide1.jpeg' }, { image: '/images/slide2.jpeg' }, { image: '/images/slide3.jpeg' }];
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchHomeProducts = async () => {
       try {
-        const [feat, best] = await Promise.all([
-          api.get('/products?featured=true'),
-          api.get('/products?bestseller=true'),
-        ]);
-        setFeatured(feat.data.slice(0, 3));
-        setBestsellers(best.data.slice(0, 4));
-      } catch (err: any) {
-        console.warn('API unavailable, using homepage fallback data:', err?.message || err);
-        // Fallback mock data if backend not running
-        const mock = [
-          { _id: '1', name: 'Himalayan Pink Salt Makhana', slug: 'himalayan-pink-salt-makhana-35g', price: 99, originalPrice: 129, category: 'Flavoured Makhanas', thumbnail: '/images/products/himalayan-salt-makhana.svg', ratings: 4.8, numReviews: 124, isBestSeller: true, stock: 150, shortDescription: 'Roasted fox nuts with Himalayan pink salt.', availableSizes: ['35gm', '75gm', '100gm'], weight: 35 },
-          { _id: '2', name: 'Vegetable Chips (100g)', slug: 'vegetable-chips-100g', price: 149, originalPrice: 199, category: 'Roasted Chips', thumbnail: '/images/products/vegetable-chips.svg', ratings: 4.9, numReviews: 201, isBestSeller: true, stock: 200, shortDescription: 'Roasted with 70% less oil.', availableSizes: ['100gm'], weight: 100 },
-          { _id: '3', name: 'No Sugar No Palm Oil Millet Cookies', slug: 'millet-cookies-100g', price: 179, originalPrice: 199, category: 'No Sugar No Palm Oil Millet Cookies', thumbnail: '/images/products/millet-cookies.svg', ratings: 4.8, numReviews: 112, isBestSeller: true, stock: 80, shortDescription: 'Nutritious millet cookies with zero sugar.', availableSizes: ['100gm'], weight: 100 },
-        ];
-        setFeatured(mock);
-        setBestsellers(mock);
-      } finally { setLoading(false); }
+        const { data } = await api.get('/products');
+        const products = data.products || data;
+        setFeatured(products.filter((p: any) => p.isFeatured));
+        setBestsellers(products.filter((p: any) => p.isBestSeller).slice(0, 4));
+      } catch (err) {
+        console.error('Failed to load home products', err);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchProducts();
+    fetchHomeProducts();
   }, []);
 
   useEffect(() => {
@@ -134,10 +152,12 @@ export default function HomePage() {
   useEffect(() => {
     if (!mounted) return;
     const timer = setInterval(() => setTestimonialIndex(i => (i + 1) % testimonials.length), 4000);
-    const slideTimer = setInterval(() => setCurrentSlide(s => (s + 1) % heroSlides.length), 5000);
+    const slideTimer = setInterval(() => setCurrentSlide(s => (s + 1) % heroSlides.length), 3000);
+    const infoTimer = setInterval(() => setInfoSlide(s => (s + 1) % infoSlides.length), 2500);
     return () => {
       clearInterval(timer);
       clearInterval(slideTimer);
+      clearInterval(infoTimer);
     };
   }, [mounted]);
 
@@ -213,9 +233,14 @@ export default function HomePage() {
                 className="w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] max-w-sm flex-shrink-0"
               >
                 <div className="card overflow-hidden group flex flex-col h-full hover:shadow-lg transition-all duration-300">
-                  {/* Card Header with Icon */}
-                  <div className="relative h-32 overflow-hidden flex items-center justify-center flex-shrink-0" style={{ background: cat.color }}>
-                    <div className="text-5xl group-hover:scale-125 transition-transform duration-300 drop-shadow-sm">{cat.emoji}</div>
+                  {/* Card Header with Image */}
+                  <div className="relative h-40 overflow-hidden flex-shrink-0" style={{ background: cat.color }}>
+                    <img
+                      src={cat.image}
+                      alt={cat.name}
+                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                      style={{ objectPosition: 'center center' }}
+                    />
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-black transition-opacity duration-300"></div>
                   </div>
 
@@ -302,7 +327,7 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="w-full overflow-hidden flex justify-center">
-              <div className="scroll-animate flex gap-4 w-max" style={{ '--duration': '20s' } as any}>
+              <div className="scroll-animate-reverse flex gap-4 w-max" style={{ '--duration': '7s' } as any}>
                 {[...featured, ...featured].map((p, i) => (
                   <div key={`featured-${i}`} className="flex-shrink-0 w-[280px] sm:w-[320px]">
                     <ProductCardWithSizes product={p} />
@@ -360,7 +385,7 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="w-full overflow-hidden flex justify-center">
-              <div className="scroll-animate flex gap-4 w-max" style={{ '--duration': '15s' } as any}>
+              <div className="scroll-animate flex gap-4 w-max" style={{ '--duration': '8s' } as any}>
                 {[...bestsellers, ...bestsellers].map((p, i) => (
                   <div key={`bestseller-${i}`} className="flex-shrink-0 w-[220px] sm:w-[260px]">
                     <ProductCardWithSizes product={p} />
@@ -381,72 +406,17 @@ export default function HomePage() {
             <p className="section-subtitle mt-3 max-w-2xl mx-auto text-gray-600">We believe in quality over quantity. Here is how we compare to traditional snacking options.</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Tabular Comparison Table Card - Left Side (5 cols) */}
-            <div className="lg:col-span-5 card p-6 md:p-8 border border-gray-100 hover:shadow-xl transition-all duration-500 animate-slideInLeft relative overflow-hidden bg-white">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#475d2a]/5 rounded-full filter blur-xl pointer-events-none"></div>
-              
-              <h3 className="text-xl font-bold mb-6 text-[#475d2a] flex items-center gap-2">
-                📊 The Snacking Comparison
-              </h3>
-              
-              <div className="space-y-4">
-                {/* Table Header */}
-                <div className="grid grid-cols-2 gap-4 pb-3 border-b border-gray-100 text-xs font-bold uppercase tracking-wider text-gray-400">
-                  <div>Traditional Snacks</div>
-                  <div className="text-[#475d2a]">ShuddhEats</div>
-                </div>
-
-                {/* Row 1 */}
-                <div className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 text-sm">
-                  <div className="text-gray-500 flex items-start gap-1.5">
-                    <span className="text-red-500">❌</span> Deep Fried in Palm Oil
-                  </div>
-                  <div className="text-gray-800 font-medium flex items-start gap-1.5">
-                    <span className="text-green-600">✅</span> Roasted or Air-Fried
-                  </div>
-                </div>
-
-                {/* Row 2 */}
-                <div className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 text-sm">
-                  <div className="text-gray-500 flex items-start gap-1.5">
-                    <span className="text-red-500">❌</span> Artificial Preservatives
-                  </div>
-                  <div className="text-gray-800 font-medium flex items-start gap-1.5">
-                    <span className="text-green-600">✅</span> 100% Preservative Free
-                  </div>
-                </div>
-
-                {/* Row 3 */}
-                <div className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 text-sm">
-                  <div className="text-gray-500 flex items-start gap-1.5">
-                    <span className="text-red-500">❌</span> Refined Sugar & Maida
-                  </div>
-                  <div className="text-gray-800 font-medium flex items-start gap-1.5">
-                    <span className="text-green-600">✅</span> Millets, Jowar & Stevia
-                  </div>
-                </div>
-
-                {/* Row 4 */}
-                <div className="grid grid-cols-2 gap-4 py-3 border-b border-gray-50 text-sm">
-                  <div className="text-gray-500 flex items-start gap-1.5">
-                    <span className="text-red-500">❌</span> Industrial Batching
-                  </div>
-                  <div className="text-gray-800 font-medium flex items-start gap-1.5">
-                    <span className="text-green-600">✅</span> Handcrafted Small Batches
-                  </div>
-                </div>
-
-                {/* Row 5 */}
-                <div className="grid grid-cols-2 gap-4 py-3 text-sm">
-                  <div className="text-gray-500 flex items-start gap-1.5">
-                    <span className="text-red-500">❌</span> Hidden Chemicals & MSG
-                  </div>
-                  <div className="text-gray-800 font-medium flex items-start gap-1.5">
-                    <span className="text-green-600">✅</span> Clean-Labeled Ingredients
-                  </div>
-                </div>
-              </div>
+            <div className="lg:col-span-5 border border-gray-100 hover:shadow-xl transition-all duration-500 animate-slideInLeft rounded-xl overflow-hidden bg-white shadow-sm">
+                <Image 
+                  src="/images/nutrition.jpeg" 
+                  alt="Nutrition Comparison" 
+                  width={1200}
+                  height={675}
+                  className="w-full h-auto object-contain"
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                />
             </div>
 
             {/* Column Grid Cards - Right Side (7 cols) */}
@@ -511,6 +481,46 @@ export default function HomePage() {
             <Link href="/shop" className="btn-accent inline-flex items-center gap-2 px-8 py-3">
               Explore Our Handcrafted Collection <ArrowRight className="w-4 h-4" />
             </Link>
+          </div>
+        </div>
+      </section>
+      {/* Information Slideshow */}
+      <section className="py-12 md:py-20 bg-white">
+        <div className="page-container">
+          <div className="text-center mb-10">
+            <div className="badge badge-primary mb-2">More About Us</div>
+            <h2 className="section-title text-2xl md:text-3xl font-extrabold text-[#475d2a]">Trusted By Everyone</h2>
+          </div>
+          
+          <div className="max-w-6xl mx-auto relative rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+            <div className="relative w-full bg-[#fafaf7]">
+              {infoSlides.map((slide, idx) => (
+                <div 
+                  key={idx}
+                  className={`${idx === 0 ? 'relative' : 'absolute inset-0'} w-full h-full transition-opacity duration-500 ease-in-out ${idx === infoSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                >
+                  <Image 
+                    src={slide.image}
+                    alt="ShuddhEats Information"
+                    width={1200}
+                    height={675}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+            
+            {/* Navigation Dots */}
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
+              {infoSlides.map((_, idx) => (
+                <button 
+                  key={idx}
+                  onClick={() => setInfoSlide(idx)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 shadow-sm border border-black/10 ${idx === infoSlide ? 'bg-[#475d2a] w-8' : 'bg-white/80 hover:bg-white'}`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>

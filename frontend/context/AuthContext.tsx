@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setRequiresTwoFA(false);
             setTempSessionToken(null);
         } catch (error) {
-            console.error('❌ Login failed:', error);
+            console.warn('❌ Login failed:', error);
             throw error;
         }
     };

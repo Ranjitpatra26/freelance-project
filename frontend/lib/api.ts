@@ -59,7 +59,8 @@ api.interceptors.response.use(
         }
 
         if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-            console.error(`❌ API Error: ${error.response?.status} ${error.config?.url}`, {
+            // Use console.warn instead of console.error so Next.js doesn't show the error overlay for expected 401s
+            console.warn(`❌ API Error: ${error.response?.status} ${error.config?.url}`, {
                 message: error.response?.data?.message || error.message,
                 status: error.response?.status,
                 isNetworkError: !error.response,
